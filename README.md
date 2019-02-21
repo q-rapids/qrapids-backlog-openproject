@@ -6,7 +6,7 @@ project management tool.
 
 **Documentation :**
 
-https://github.com/q-rapids/q-rapids-backlog-openproject/wiki
+https://github.com/q-rapids/q-rapids-backlog-openproject/wiki/Q-Rapids-Backlog-Generator-to-OpenProject-User-Guide
 
 **The plugin is released under the Apache  2.0 License:**
 
