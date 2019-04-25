@@ -28,7 +28,6 @@ import org.qrapids.backlog.openproject.service.data.SuccessResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,17 +45,17 @@ public class RequirementGeneratorService {
 	@Inject
 	private IOpenProjectServiceProxy serviceProxy;
 	
-	@CrossOrigin
 	@PostMapping("/addToBacklog")
 	public ResponseEntity<Object> addToBacklog(@RequestBody QualityRequirement requirement) {	
 		
 		try {
 			OPRequirement opRequirement = new OPRequirement();
 			opRequirement.setSubject(requirement.getIssue_summary());
-			opRequirement.getDescription().setRaw(requirement.getIssue_description());
+			opRequirement.getDescription().setRaw(requirement.getIssue_description() + " Rational:" + requirement.getDecision_rationale());
 			opRequirement.getDescription().setFormat("markdown");
-			opRequirement.getDescription().setHtml("<p>" + requirement.getIssue_description() +"</p>");
-			String workpackageId = serviceProxy.generateQualityRequirement(opRequirement);
+			opRequirement.getDescription().setHtml("<p>" + requirement.getIssue_description() +"</p> <p>" +requirement.getDecision_rationale()+"</p>");
+			
+			String workpackageId = serviceProxy.generateQualityRequirement(opRequirement,requirement.getProject_id());
 
 			String workPackageUrl = url + WORKPACKAGE_URL.replaceAll("ID_PLACEOLDER", workpackageId);
 			

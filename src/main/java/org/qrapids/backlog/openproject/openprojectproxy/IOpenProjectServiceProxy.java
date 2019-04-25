@@ -24,6 +24,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface IOpenProjectServiceProxy {
 
-	public String generateQualityRequirement(OPRequirement requirement) throws Exception;
+	public String generateQualityRequirement(OPRequirement requirement,String project_id) throws Exception;
  
 }

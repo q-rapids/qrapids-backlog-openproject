@@ -50,10 +50,14 @@ public class OpenProjectServiceProxy implements IOpenProjectServiceProxy {
 	private String projectName;
 
 	@Override
-	public String generateQualityRequirement(OPRequirement requirement) throws Exception {
+	public String generateQualityRequirement(OPRequirement requirement,String projectId) throws Exception {
 		OPType type = getTypeId();
 		if (type != null) {
 			requirement.setType(type);
+		}
+		
+		if(projectId == null || "".equals(projectId)) {
+			projectId = projectName;
 		}
 
 		String plainCreds = "apikey:" + apikey;
@@ -70,7 +74,7 @@ public class OpenProjectServiceProxy implements IOpenProjectServiceProxy {
 
 		String val = mapper.writeValueAsString(requirement);
 		HttpEntity<String> request = new HttpEntity<String>(val, headers);
-		OPRequirement response = restTemplate.postForObject(url + "/api/v3/projects/" + projectName + "/work_packages", request,OPRequirement.class);
+		OPRequirement response = restTemplate.postForObject(url + "/api/v3/projects/" + projectId + "/work_packages", request,OPRequirement.class);
 		if(response.getId() != null) {
 			return response.getId();
 		}	
