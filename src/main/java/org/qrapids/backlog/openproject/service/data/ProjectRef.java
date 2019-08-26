@@ -16,27 +16,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 */
-package org.qrapids.backlog.openproject.openprojectproxy.data;
+package org.qrapids.backlog.openproject.service.data;
 
-import java.io.Serializable;
+public class ProjectRef {
+	
+	public String project_id;
 
-public class OPType  implements Serializable{
-	private String href="";
-	private String title="";
-	
-	public String getHref() {
-		return href;
+	public String getProject_id() {
+		return project_id;
 	}
-	public void setHref(String href) {
-		this.href = href;
+
+	public void setProject_id(String project_id) {
+		this.project_id = project_id;
 	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
-	
-	
 }

@@ -20,23 +20,16 @@ package org.qrapids.backlog.openproject.openprojectproxy.data;
 
 import java.io.Serializable;
 
-public class OPType  implements Serializable{
-	private String href="";
-	private String title="";
-	
-	public String getHref() {
-		return href;
+public class OPWorkPackageList implements Serializable{
+
+	private OPWPEmbeded _embedded;
+
+	public OPWPEmbeded get_embedded() {
+		return _embedded;
 	}
-	public void setHref(String href) {
-		this.href = href;
+
+	public void set_embedded(OPWPEmbeded _embedded) {
+		this._embedded = _embedded;
 	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
-	
-	
+
 }

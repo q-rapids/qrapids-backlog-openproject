@@ -18,12 +18,19 @@ limitations under the License.
 */
 package org.qrapids.backlog.openproject.openprojectproxy;
 
+import java.util.List;
+
 import org.qrapids.backlog.openproject.openprojectproxy.data.OPRequirement;
+import org.qrapids.backlog.openproject.openprojectproxy.data.OPWorkPackage;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface IOpenProjectServiceProxy {
 
 	public String generateQualityRequirement(OPRequirement requirement,String project_id) throws Exception;
+
+	public List<OPWorkPackage> getMilestones(String project_id, String date);
+
+	public List<OPWorkPackage>  getPhases(String project_id);
  
 }

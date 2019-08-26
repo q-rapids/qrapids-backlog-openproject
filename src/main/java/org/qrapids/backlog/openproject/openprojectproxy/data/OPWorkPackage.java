@@ -20,24 +20,50 @@ package org.qrapids.backlog.openproject.openprojectproxy.data;
 
 import java.io.Serializable;
 
-public class OPRequirement  implements Serializable{
+public class OPWorkPackage  implements Serializable{
 	private String id = "";
 	private String subject = "";
-
+	private String date;
+	
+	private String startDate;
+	private String dueDate;
 	private OPDescription description;
-	private OPType type;
+	private OPLink _links;
 
-	public OPRequirement() {
+	public OPWorkPackage() {
 		this.description = new OPDescription();
-		this.type = new OPType();
+	}
+	
+	public String getStartDate() {
+		return startDate;
 	}
 
-	public OPType getType() {
-		return type;
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
 	}
 
-	public void setType(OPType type) {
-		this.type = type;
+	public String getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(String dueDate) {
+		this.dueDate = dueDate;
+	}
+	
+	public OPLink get_links() {
+		return _links;
+	}
+
+	public void set_links(OPLink _links) {
+		this._links = _links;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 	public String getId() {

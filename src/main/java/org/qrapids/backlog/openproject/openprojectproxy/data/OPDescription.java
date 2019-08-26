@@ -18,7 +18,9 @@ limitations under the License.
 */
 package org.qrapids.backlog.openproject.openprojectproxy.data;
 
-public class OPDescription {
+import java.io.Serializable;
+
+public class OPDescription  implements Serializable{
 	private String format = "";	
 	private String raw  = "";	
 	private String html  = "";	

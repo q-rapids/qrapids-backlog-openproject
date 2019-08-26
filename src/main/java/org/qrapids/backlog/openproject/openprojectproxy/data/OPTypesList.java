@@ -18,7 +18,9 @@ limitations under the License.
 */
 package org.qrapids.backlog.openproject.openprojectproxy.data;
 
-public class OPTypesList {
+import java.io.Serializable;
+
+public class OPTypesList  implements Serializable{
 
 	private TEmbeded _embedded;
 

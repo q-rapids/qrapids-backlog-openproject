@@ -19,24 +19,17 @@ limitations under the License.
 package org.qrapids.backlog.openproject.openprojectproxy.data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class OPType  implements Serializable{
-	private String href="";
-	private String title="";
-	
-	public String getHref() {
-		return href;
+public class OPWPEmbeded  implements Serializable{
+	private List<OPWorkPackage> elements = new ArrayList<>();
+
+	public List<OPWorkPackage> getElements() {
+		return elements;
 	}
-	public void setHref(String href) {
-		this.href = href;
+
+	public void setElements(List<OPWorkPackage> elements) {
+		this.elements = elements;
 	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	
-	
-	
 }

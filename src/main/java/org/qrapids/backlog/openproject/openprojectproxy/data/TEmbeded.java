@@ -18,10 +18,11 @@ limitations under the License.
 */
 package org.qrapids.backlog.openproject.openprojectproxy.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TEmbeded{
+public class TEmbeded  implements Serializable{
 	private List<TElement> elements = new ArrayList<>();
 
 	public List<TElement> getElements() {

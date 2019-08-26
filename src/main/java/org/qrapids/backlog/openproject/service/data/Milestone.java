@@ -16,25 +16,35 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
 */
-package org.qrapids.backlog.openproject.openprojectproxy.data;
+package org.qrapids.backlog.openproject.service.data;
 
-import java.io.Serializable;
-
-public class TElement  implements Serializable{
-	
-	private String id;
+public class Milestone {
+	private String date;
 	private String name;
-	
-	public String getId() {
-		return id;
+	private String description;
+	private String type;
+	public String getDate() {
+		return date;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setDate(String date) {
+		this.date = date;
 	}
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 }
