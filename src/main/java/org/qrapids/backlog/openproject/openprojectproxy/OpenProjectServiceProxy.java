@@ -1,13 +1,13 @@
- /*
+/*
 
 Copyright 2018 Softeam
 
- 
+
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
- 
-    http://www.apache.org/licenses/LICENSE-2.0
+
+   http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -19,7 +19,10 @@ limitations under the License.
 
 package org.qrapids.backlog.openproject.openprojectproxy;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -28,8 +31,6 @@ import org.qrapids.backlog.openproject.openprojectproxy.data.OPType;
 import org.qrapids.backlog.openproject.openprojectproxy.data.OPTypesList;
 import org.qrapids.backlog.openproject.openprojectproxy.data.OPWorkPackage;
 import org.qrapids.backlog.openproject.openprojectproxy.data.OPWorkPackageList;
-import org.qrapids.backlog.openproject.service.data.Milestone;
-import org.qrapids.backlog.openproject.service.data.Phase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpEntity;
@@ -57,13 +58,13 @@ public class OpenProjectServiceProxy implements IOpenProjectServiceProxy {
 	private String projectName;
 
 	@Override
-	public String generateQualityRequirement(OPRequirement requirement,String projectId) throws Exception {
+	public String generateQualityRequirement(OPRequirement requirement, String projectId) throws Exception {
 		OPType type = getTypeId(requirementType);
 		if (type != null) {
 			requirement.setType(type);
 		}
-		
-		if(projectId == null || "".equals(projectId)) {
+
+		if (projectName != null && !"".equals(projectName)) {
 			projectId = projectName;
 		}
 
@@ -81,10 +82,12 @@ public class OpenProjectServiceProxy implements IOpenProjectServiceProxy {
 
 		String val = mapper.writeValueAsString(requirement);
 		HttpEntity<String> request = new HttpEntity<String>(val, headers);
-		OPRequirement response = restTemplate.postForObject(url + "/api/v3/projects/" + projectId + "/work_packages", request,OPRequirement.class);
-		if(response.getId() != null) {
+		System.out.println(url + "/api/v3/projects/" + projectId + "/work_packages");
+		OPRequirement response = restTemplate.postForObject(url + "/api/v3/projects/" + projectId + "/work_packages",
+				request, OPRequirement.class);
+		if (response.getId() != null) {
 			return response.getId();
-		}	
+		}
 		throw new Exception("The quality requerement has not bean generated");
 	}
 
@@ -100,6 +103,7 @@ public class OpenProjectServiceProxy implements IOpenProjectServiceProxy {
 		RestTemplate restTemplate = new RestTemplate();
 
 		HttpEntity<String> request = new HttpEntity<String>(headers);
+		System.out.println(url + "/api/v3/types");
 		ResponseEntity<OPTypesList> response = restTemplate.exchange(url + "/api/v3/types", HttpMethod.GET, request,
 				OPTypesList.class);
 		OPTypesList typeListe = response.getBody();
@@ -109,8 +113,8 @@ public class OpenProjectServiceProxy implements IOpenProjectServiceProxy {
 
 	@Override
 	public List<OPWorkPackage> getMilestones(String project_id, String from_date) {
-		
-		if(project_id == null || "".equals(project_id)) {
+
+		if (projectName != null && !"".equals(projectName)) {
 			project_id = projectName;
 		}
 
@@ -125,20 +129,22 @@ public class OpenProjectServiceProxy implements IOpenProjectServiceProxy {
 		RestTemplate restTemplate = new RestTemplate();
 
 		HttpEntity<String> request = new HttpEntity<String>(headers);
-		ResponseEntity<OPWorkPackageList> response = restTemplate.exchange(url + "/api/v3/projects/" + project_id + "/work_packages",HttpMethod.GET, request,OPWorkPackageList.class);
+		System.out.println(url + "/api/v3/projects/" + project_id + "/work_packages");
+		ResponseEntity<OPWorkPackageList> response = restTemplate.exchange(
+				url + "/api/v3/projects/" + project_id + "/work_packages?pageSize=1000", HttpMethod.GET, request,
+				OPWorkPackageList.class);
 
 		OPWorkPackageList wpListe = response.getBody();
-		
-		if(response != null && wpListe.get_embedded() != null) {
+
+		if (response != null && wpListe.get_embedded() != null) {
 			List<OPWorkPackage> result = new ArrayList<>();
-			for(OPWorkPackage element :  wpListe.get_embedded().getElements()) {
-				if(element.get_links() != null && "Milestone".equals(element.get_links().getType().getTitle())){
-					if(from_date != null) {
-						if(element.getDate().compareTo("from_date") > 0 ) {
+			for (OPWorkPackage element : wpListe.get_embedded().getElements()) {
+				if (element.get_links() != null && "Milestone".equals(element.get_links().getType().getTitle())) {
+					if (from_date != null) {
+						if (element.getDate().compareTo(from_date) > 0) {
 							result.add(element);
 						}
-						
-					}else {
+					} else {
 						result.add(element);
 					}
 				}
@@ -149,8 +155,8 @@ public class OpenProjectServiceProxy implements IOpenProjectServiceProxy {
 	}
 
 	@Override
-	public List<OPWorkPackage> getPhases(String project_id) {
-		if(project_id == null || "".equals(project_id)) {
+	public List<OPWorkPackage> getPhases(String project_id, String from_date) {
+		if (projectName != null && !"".equals(projectName)) {
 			project_id = projectName;
 		}
 
@@ -165,14 +171,25 @@ public class OpenProjectServiceProxy implements IOpenProjectServiceProxy {
 		RestTemplate restTemplate = new RestTemplate();
 
 		HttpEntity<String> request = new HttpEntity<String>(headers);
-		ResponseEntity<OPWorkPackageList> response = restTemplate.exchange(url + "/api/v3/projects/" + project_id + "/work_packages",HttpMethod.GET, request,OPWorkPackageList.class);
+
+		System.out.println(url + "/api/v3/projects/" + project_id + "/work_packages?pageSize=1000");
+
+		ResponseEntity<OPWorkPackageList> response = restTemplate.exchange(
+				url + "/api/v3/projects/" + project_id + "/work_packages", HttpMethod.GET, request,
+				OPWorkPackageList.class);
 
 		OPWorkPackageList wpListe = response.getBody();
-		if(response != null && wpListe.get_embedded() != null) {
+		if (response != null && wpListe.get_embedded() != null) {
 			List<OPWorkPackage> result = new ArrayList<>();
-			for(OPWorkPackage element :  wpListe.get_embedded().getElements()) {
-				if(element.get_links() != null && "Phase".equals(element.get_links().getType().getTitle())){
-					result.add(element);
+			for (OPWorkPackage element : wpListe.get_embedded().getElements()) {
+				if (element.get_links() != null && "Phase".equals(element.get_links().getType().getTitle())) {
+					if (from_date != null) {
+						if (element.getDate().compareTo(from_date) > 0) {
+							result.add(element);
+						}
+					} else {
+						result.add(element);
+					}
 				}
 			}
 			return result;

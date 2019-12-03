@@ -37,10 +37,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value="api")
 public class RequirementGeneratorService {
 	
-	private static final String WORKPACKAGE_URL = "/projects/modeliong/work_packages/ID_PLACEOLDER/activity";
+	private static final String WORKPACKAGE_URL = "/projects/PROJECT_PLACEOLDER/work_packages/REQUIREMENT_PLACEOLDER/activity";
 	
 	@Value("${openproject.url}")
 	private String url;
+	
+	@Value("${openproject.project.name}")
+	private String projectName;
 	
 	@Inject
 	private IOpenProjectServiceProxy serviceProxy;
@@ -56,8 +59,13 @@ public class RequirementGeneratorService {
 			opRequirement.getDescription().setHtml("<p>" + requirement.getIssue_description() +"</p> <p>" +requirement.getDecision_rationale()+"</p>");
 			
 			String workpackageId = serviceProxy.generateQualityRequirement(opRequirement,requirement.getProject_id());
-
-			String workPackageUrl = url + WORKPACKAGE_URL.replaceAll("ID_PLACEOLDER", workpackageId);
+			
+			String projectId = requirement.getProject_id();
+			if(projectName != null && "".equals(projectName)) {
+				projectId = projectName;
+			}
+			
+			String workPackageUrl = url +"/projects/" + projectId+ "/work_packages/" + workpackageId + "/activity";
 			
 			return new ResponseEntity<>(new SuccessResponse(workpackageId,workPackageUrl),HttpStatus.OK);
 		}catch (Exception e){

@@ -31,6 +31,6 @@ public interface IOpenProjectServiceProxy {
 
 	public List<OPWorkPackage> getMilestones(String project_id, String date);
 
-	public List<OPWorkPackage>  getPhases(String project_id);
+	public List<OPWorkPackage>  getPhases(String project_id,String date);
  
 }

@@ -20,33 +20,33 @@ package org.qrapids.backlog.openproject.service.data;
 
 public class Phase {
 	
-	private String date_from;
-	private String date_to;
-	private String phase_name;
-	private String phase_description;
+	private String dateFrom;
+	private String dateTo;
+	private String name;
+	private String description;
+	public String getDateFrom() {
+		return dateFrom;
+	}
+	public void setDateFrom(String dateFrom) {
+		this.dateFrom = dateFrom;
+	}
+	public String getDateTo() {
+		return dateTo;
+	}
+	public void setDateTo(String dateTo) {
+		this.dateTo = dateTo;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
 	
-	public String getDate_from() {
-		return date_from;
-	}
-	public void setDate_from(String date_from) {
-		this.date_from = date_from;
-	}
-	public String getDate_to() {
-		return date_to;
-	}
-	public void setDate_to(String date_to) {
-		this.date_to = date_to;
-	}
-	public String getPhase_name() {
-		return phase_name;
-	}
-	public void setPhase_name(String phase_name) {
-		this.phase_name = phase_name;
-	}
-	public String getPhase_description() {
-		return phase_description;
-	}
-	public void setPhase_description(String phase_description) {
-		this.phase_description = phase_description;
-	}
 }
